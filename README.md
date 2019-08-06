@@ -1,5 +1,4 @@
 # TheMovieDbApp
-It's a Movie App created with Retrofit2, Pagination Library, MVVM Architecture Pattern and Dagger2.
 
 TheMovieDbApp, is an aplication build using Java 8 as an example for creating a API call to [themoviedb.org](https://developers.themoviedb.org/3/getting-started/introduction).
 
