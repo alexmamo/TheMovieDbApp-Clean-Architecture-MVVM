@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_and_release_date_text_size">18sp</dimen>
+    <dimen name="tablet_title_and_release_date_text_size">28sp</dimen>
+    <dimen name="standard_text_size">15sp</dimen>
+    <dimen name="standard_tablet_text_size">25sp</dimen>
+    <dimen name="standard_margin_size">8dp</dimen>
+    <dimen name="player_padding">16dp</dimen>
+</resources>

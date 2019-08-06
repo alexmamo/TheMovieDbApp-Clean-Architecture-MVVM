@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_gravity="bottom"
+    android:background="#A6000000"
+    android:layoutDirection="ltr">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/player_padding"
+        android:paddingRight="@dimen/player_padding">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@id/exo_play"
+            android:background="@android:color/transparent"
+            app:srcCompat="@android:drawable/ic_media_play"
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@id/exo_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:srcCompat="@android:drawable/ic_media_pause"
+            tools:ignore="ContentDescription"/>
+
+        <TextView
+            android:id="@id/exo_position"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/player_padding"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:letterSpacing="-0.02"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            tools:text="23:09" />
+
+        <com.google.android.exoplayer2.ui.DefaultTimeBar
+            android:id="@id/exo_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:bar_height="8dp"
+            app:buffered_color="#4Dd8d8d8"
+            app:played_color="@color/colorWhite"
+            app:scrubber_color="@color/colorWhite"
+            app:unplayed_color="#4Dd8d8d8" />
+    </LinearLayout>
+</LinearLayout>
