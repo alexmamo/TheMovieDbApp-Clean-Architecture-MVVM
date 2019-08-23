@@ -46,7 +46,9 @@ public class UpcomingMoviesAdapter extends PagedListAdapter<UpcomingMovie, Upcom
     @Override
     public void onBindViewHolder(@NonNull final MovieViewHolder holder, int position) {
         UpcomingMovie upcomingMovie = getItem(position);
-        holder.bindMovie(upcomingMovie);
+        if (upcomingMovie != null) {
+            holder.bindMovie(upcomingMovie);
+        }
     }
 
     private static DiffUtil.ItemCallback<UpcomingMovie> diffCallback = new DiffUtil.ItemCallback<UpcomingMovie>() {
@@ -121,5 +123,9 @@ public class UpcomingMoviesAdapter extends PagedListAdapter<UpcomingMovie, Upcom
         private void hideProgressBar() {
             progressBar.setVisibility(View.GONE);
         }
+    }
+
+    interface OnUpcomingMovieClickListener {
+        void onUpcomingMovieViewClick(UpcomingMovie upcomingMovie);
     }
 }

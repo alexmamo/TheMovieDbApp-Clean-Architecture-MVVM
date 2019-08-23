@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'com.android.tools.build:gradle:3.5.0'
     }
 }
 
@@ -24,7 +24,7 @@ ext {
     appcompat = "1.0.2"
     constraintlayout = "1.1.3"
     cardview = "1.0.0"
-    recyclerview = "1.0.0"
+    recyclerview = "1.1.0-beta03"
     material = "1.1.0-alpha09"
     support = "28.0.0"
     junit = "4.12"
@@ -33,7 +33,7 @@ ext {
     ext_junit = "1.1.0"
     espresso = "3.2.0"
     core_testing = "1.1.1"
-    lifecycle = '2.2.0-alpha02'
+    lifecycle = '2.2.0-alpha03'
     paging = "2.1.0"
     glide = "4.9.0"
     dagger = "2.22"

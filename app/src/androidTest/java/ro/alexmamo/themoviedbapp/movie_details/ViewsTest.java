@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ro.alexmamo.themoviedbapp.R;
-import ro.alexmamo.themoviedbapp.upcoming_movies.UpcomingMoviesActivity;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;

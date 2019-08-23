@@ -10,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.RequestManager;
 import com.google.android.exoplayer2.ui.PlayerView;
@@ -27,15 +25,15 @@ import at.huber.youtubeExtractor.YouTubeExtractor;
 import at.huber.youtubeExtractor.YtFile;
 import dagger.android.support.DaggerAppCompatActivity;
 import ro.alexmamo.themoviedbapp.R;
-import ro.alexmamo.themoviedbapp.movie_details.play.Trailer;
-import ro.alexmamo.themoviedbapp.movie_details.play.TrailersApiResponse;
 import ro.alexmamo.themoviedbapp.movie_details.play.PlayVideoViewModel;
+import ro.alexmamo.themoviedbapp.movie_details.play.Trailer;
 import ro.alexmamo.themoviedbapp.utils.exo_player.ExoPlayerManager;
 
 import static ro.alexmamo.themoviedbapp.utils.HelperClass.getEntirePosterPathUrl;
 
 public class MovieDetailsActivity extends DaggerAppCompatActivity {
-    @Inject ApiViewModelFactory factory;
+    @Inject MovieDetailsViewModel movieDetailsViewModel;
+    @Inject PlayVideoViewModel playVideoViewModel;
     @Inject RequestManager requestManager;
     private int movieId;
     private ImageView posterPathImageView;
@@ -77,10 +75,8 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
     }
 
     private void initMovieDetailsViewModel() {
-        MovieDetailsViewModel viewModel = ViewModelProviders.of(this, factory).get(MovieDetailsViewModel.class);
-        viewModel.setMovieId(movieId);
-        LiveData<MovieDetails> movieDetailsLiveData = viewModel.getMovieDetailsLiveData();
-        movieDetailsLiveData.observe(this, movieDetails -> {
+        movieDetailsViewModel.setMovieId(movieId);
+        movieDetailsViewModel.getMovieDetailsLiveData().observe(this, movieDetails -> {
             setPosterPathImageView(movieDetails.posterPath);
             setTitleAndReleaseDateTextView(movieDetails.title, movieDetails.releaseDate);
             setLanguageTextView(movieDetails.language);
@@ -123,7 +119,7 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
                 genresStringBuilder.append(name).append(separator);
             }
         }
-        String allGenres = "Genres: " + new StringBuilder(genresStringBuilder);
+        String allGenres = "Genres: " + genresStringBuilder;
         genresTextView.setText(allGenres);
     }
 
@@ -148,10 +144,8 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
     }
 
     private void playFirstTrailer(int movieId) {
-        PlayVideoViewModel viewModel = ViewModelProviders.of(this, factory).get(PlayVideoViewModel.class);
-        viewModel.setMovieId(movieId);
-        LiveData<TrailersApiResponse> trailersApiResponseLiveData = viewModel.getMovieDetailsLiveData();
-        trailersApiResponseLiveData.observe(this, trailersApiResponse -> {
+        playVideoViewModel.setMovieId(movieId);
+        playVideoViewModel.getMovieDetailsLiveData().observe(this, trailersApiResponse -> {
             if (trailersApiResponse != null) {
                 List<Trailer> trailers = trailersApiResponse.trailers;
                 Trailer firstTrailer = trailers.get(0);

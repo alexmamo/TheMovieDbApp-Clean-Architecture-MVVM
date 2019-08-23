@@ -8,5 +8,5 @@ public interface Constants {
     int LANDSCAPE_SPAN_COUNT = 5;
     int TABLET_SPAN_COUNT = 2;
     int FIRST_PAGE = 1;
-    int RECORDS_PER_PAGE = 15;
+    int ITEMS_PER_PAGE = 15;
 }

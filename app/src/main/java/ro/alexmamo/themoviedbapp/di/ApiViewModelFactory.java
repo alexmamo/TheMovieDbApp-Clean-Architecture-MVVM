@@ -1,4 +1,4 @@
-package ro.alexmamo.themoviedbapp.movie_details;
+package ro.alexmamo.themoviedbapp.di;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

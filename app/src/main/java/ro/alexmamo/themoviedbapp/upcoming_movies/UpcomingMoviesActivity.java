@@ -10,24 +10,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerAppCompatActivity;
 import ro.alexmamo.themoviedbapp.R;
 import ro.alexmamo.themoviedbapp.movie_details.MovieDetailsActivity;
 
 import static ro.alexmamo.themoviedbapp.utils.Constants.LANDSCAPE_SPAN_COUNT;
 import static ro.alexmamo.themoviedbapp.utils.Constants.TABLET_SPAN_COUNT;
 
-public class UpcomingMoviesActivity extends AppCompatActivity implements Observer<PagedList<UpcomingMovie>>, OnUpcomingMovieClickListener {
+public class UpcomingMoviesActivity extends DaggerAppCompatActivity implements Observer<PagedList<UpcomingMovie>>,
+        UpcomingMoviesAdapter.OnUpcomingMovieClickListener {
+    @Inject UpcomingMoviesViewModel upcomingMoviesViewModel;
     private RecyclerView moviesRecyclerView;
     private UpcomingMoviesAdapter upcomingMoviesAdapter;
-    private UpcomingMoviesViewModel upcomingMoviesViewModel;
     private SearchView searchView;
 
     @Override
@@ -36,14 +38,13 @@ public class UpcomingMoviesActivity extends AppCompatActivity implements Observe
         setContentView(R.layout.activity_movies);
         initRecyclerView();
         initMoviesAdapter();
-        initMoviesViewModel();
         loadMovies();
     }
 
     private void initRecyclerView() {
         moviesRecyclerView = findViewById(R.id.movies_recycler_view);
         Context context = moviesRecyclerView.getContext();
-        int orientation = GridLayoutManager.HORIZONTAL;
+        int orientation = RecyclerView.HORIZONTAL;
         GridLayoutManager horizontalGridLayoutManager;
         if (isLandscape()) {
             horizontalGridLayoutManager = new GridLayoutManager(context, LANDSCAPE_SPAN_COUNT);
@@ -69,13 +70,8 @@ public class UpcomingMoviesActivity extends AppCompatActivity implements Observe
         moviesRecyclerView.setAdapter(upcomingMoviesAdapter);
     }
 
-    private void initMoviesViewModel() {
-        upcomingMoviesViewModel = ViewModelProviders.of(this).get(UpcomingMoviesViewModel.class);
-        upcomingMoviesViewModel.getMoviesPagedListLiveData().observe(this, this);
-    }
-
     private void loadMovies() {
-        upcomingMoviesViewModel.pagedListLiveData.observe(this, this);
+        upcomingMoviesViewModel.getMoviesPagedListLiveData().observe(this, this);
     }
 
     private void reloadMovies() {

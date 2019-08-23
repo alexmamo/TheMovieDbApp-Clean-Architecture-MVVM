@@ -1,28 +1,21 @@
 package ro.alexmamo.themoviedbapp.upcoming_movies;
 
-import android.app.Application;
-
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
-import static ro.alexmamo.themoviedbapp.utils.Constants.RECORDS_PER_PAGE;
+import javax.inject.Inject;
 
-public class UpcomingMoviesViewModel extends AndroidViewModel {
+public class UpcomingMoviesViewModel extends ViewModel {
     private PagedList.Config config;
     private UpcomingMoviesDataSourceFactory sourceFactory;
-    LiveData<PagedList<UpcomingMovie>> pagedListLiveData;
+    private LiveData<PagedList<UpcomingMovie>> pagedListLiveData;
 
-    public UpcomingMoviesViewModel(Application application) {
-        super(application);
-
-        config = new PagedList.Config.Builder()
-                .setEnablePlaceholders(false)
-                .setPageSize(RECORDS_PER_PAGE)
-                .build();
-
+    @Inject
+    public UpcomingMoviesViewModel(PagedList.Config config) {
+        this.config = config;
         sourceFactory = new UpcomingMoviesDataSourceFactory(null);
         pagedListLiveData = new LivePagedListBuilder<>(sourceFactory, config).build();
     }
