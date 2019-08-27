@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import androidx.appcompat.widget.SearchView;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -20,6 +21,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 import ro.alexmamo.themoviedbapp.R;
+import ro.alexmamo.themoviedbapp.databinding.ActivityUpcomingMoviesBinding;
 import ro.alexmamo.themoviedbapp.movie_details.MovieDetailsActivity;
 
 import static ro.alexmamo.themoviedbapp.utils.Constants.LANDSCAPE_SPAN_COUNT;
@@ -28,6 +30,7 @@ import static ro.alexmamo.themoviedbapp.utils.Constants.TABLET_SPAN_COUNT;
 public class UpcomingMoviesActivity extends DaggerAppCompatActivity implements Observer<PagedList<UpcomingMovie>>,
         UpcomingMoviesAdapter.OnUpcomingMovieClickListener {
     @Inject UpcomingMoviesViewModel upcomingMoviesViewModel;
+    private ActivityUpcomingMoviesBinding activityUpcomingMoviesBinding;
     private RecyclerView moviesRecyclerView;
     private UpcomingMoviesAdapter upcomingMoviesAdapter;
     private SearchView searchView;
@@ -35,14 +38,14 @@ public class UpcomingMoviesActivity extends DaggerAppCompatActivity implements O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movies);
+        activityUpcomingMoviesBinding = DataBindingUtil.setContentView(this, R.layout.activity_upcoming_movies);
         initRecyclerView();
         initMoviesAdapter();
         loadMovies();
     }
 
     private void initRecyclerView() {
-        moviesRecyclerView = findViewById(R.id.movies_recycler_view);
+        moviesRecyclerView = activityUpcomingMoviesBinding.moviesRecyclerView;
         Context context = moviesRecyclerView.getContext();
         int orientation = RecyclerView.HORIZONTAL;
         GridLayoutManager horizontalGridLayoutManager;
@@ -71,7 +74,7 @@ public class UpcomingMoviesActivity extends DaggerAppCompatActivity implements O
     }
 
     private void loadMovies() {
-        upcomingMoviesViewModel.getMoviesPagedListLiveData().observe(this, this);
+        upcomingMoviesViewModel.pagedListLiveData.observe(this, this);
     }
 
     private void reloadMovies() {
@@ -91,7 +94,7 @@ public class UpcomingMoviesActivity extends DaggerAppCompatActivity implements O
     }
 
     private void hideProgressBar() {
-        findViewById(R.id.progress_bar).setVisibility(View.GONE);
+        activityUpcomingMoviesBinding.progressBar.setVisibility(View.GONE);
     }
 
     @Override

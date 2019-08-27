@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:layout_margin="2dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
+    <data class="UpcomingMovieDataBinding">
+        <variable
+            name="upcomingMovie"
+            type="ro.alexmamo.themoviedbapp.upcoming_movies.UpcomingMovie" />
+
+        <variable
+            name="onUpcomingMovieClickListener"
+            type="ro.alexmamo.themoviedbapp.upcoming_movies.UpcomingMoviesAdapter.OnUpcomingMovieClickListener" />
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="150dp"
+        android:layout_margin="2dp"
+        android:onClick="@{(v) -> onUpcomingMovieClickListener.onUpcomingMovieViewClick(upcomingMovie)}">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/poster_path_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/poster_image_view"
+                android:posterPath="@{upcomingMovie.posterPath}"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop" />
 
             <TextView
-                android:id="@+id/title_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/title_text_view"
+                android:text="@{upcomingMovie.title}"
                 android:textColor="@android:color/white"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="4dp"
@@ -31,13 +41,5 @@
                 android:ellipsize="end"
                 android:maxLines="2"/>
         </RelativeLayout>
-
-        <ProgressBar
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:id="@+id/progress_bar"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            style="@style/Widget.AppCompat.ProgressBar"/>
-    </FrameLayout>
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>

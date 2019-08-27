@@ -1,32 +1,19 @@
 package ro.alexmamo.themoviedbapp.upcoming_movies;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-
 import ro.alexmamo.themoviedbapp.R;
+import ro.alexmamo.themoviedbapp.databinding.UpcomingMovieDataBinding;
 
-import static ro.alexmamo.themoviedbapp.utils.HelperClass.getEntirePosterPathUrl;
-
-public class UpcomingMoviesAdapter extends PagedListAdapter<UpcomingMovie, UpcomingMoviesAdapter.MovieViewHolder> {
+public class UpcomingMoviesAdapter extends PagedListAdapter<UpcomingMovie, UpcomingMoviesAdapter.UpcomingMovieViewHolder> {
     private Context context;
     private OnUpcomingMovieClickListener onUpcomingMovieClickListener;
 
@@ -38,13 +25,14 @@ public class UpcomingMoviesAdapter extends PagedListAdapter<UpcomingMovie, Upcom
 
     @NonNull
     @Override
-    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
-        return new MovieViewHolder(view, onUpcomingMovieClickListener);
+    public UpcomingMovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        UpcomingMovieDataBinding upcomingMovieDataBinding = DataBindingUtil.inflate(layoutInflater, R.layout.item_movie, parent, false);
+        return new UpcomingMovieViewHolder(upcomingMovieDataBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MovieViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final UpcomingMovieViewHolder holder, int position) {
         UpcomingMovie upcomingMovie = getItem(position);
         if (upcomingMovie != null) {
             holder.bindMovie(upcomingMovie);
@@ -63,69 +51,21 @@ public class UpcomingMoviesAdapter extends PagedListAdapter<UpcomingMovie, Upcom
         }
     };
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, RequestListener<Drawable> {
-        private OnUpcomingMovieClickListener onUpcomingMovieClickListener;
-        private ImageView posterPathImageView;
-        private ProgressBar progressBar;
-        private TextView titleTextView;
+    class UpcomingMovieViewHolder extends RecyclerView.ViewHolder {
+        private UpcomingMovieDataBinding upcomingMovieDataBinding;
 
-        MovieViewHolder(View itemView, OnUpcomingMovieClickListener onUpcomingMovieClickListener) {
-            super(itemView);
-            this.onUpcomingMovieClickListener = onUpcomingMovieClickListener;
-            itemView.setOnClickListener(this);
-            posterPathImageView = itemView.findViewById(R.id.poster_path_image_view);
-            progressBar = itemView.findViewById(R.id.progress_bar);
-            titleTextView = itemView.findViewById(R.id.title_text_view);
+        UpcomingMovieViewHolder(UpcomingMovieDataBinding upcomingMovieDataBinding) {
+            super(upcomingMovieDataBinding.getRoot());
+            this.upcomingMovieDataBinding = upcomingMovieDataBinding;
         }
 
         void bindMovie(UpcomingMovie upcomingMovie) {
-            showProgressBar();
-            setPosterPathImageView(upcomingMovie.posterPath);
-            setTitleTextView(upcomingMovie.title);
-        }
-
-        private void setPosterPathImageView(String posterPath) {
-            if (posterPath != null) {
-                String entirePosterPath = getEntirePosterPathUrl(posterPath);
-                Glide.with(context).load(entirePosterPath)
-                        .listener(this)
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .into(posterPathImageView);
-            }
-        }
-
-        private void setTitleTextView(String title){
-            titleTextView.setText(title);
-        }
-
-        @Override
-        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-            hideProgressBar();
-            return false;
-        }
-
-        @Override
-        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-            return false;
-        }
-
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-            UpcomingMovie clickedUpcomingMovie = getItem(position);
-            onUpcomingMovieClickListener.onUpcomingMovieViewClick(clickedUpcomingMovie);
-        }
-
-        private void showProgressBar() {
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        private void hideProgressBar() {
-            progressBar.setVisibility(View.GONE);
+            upcomingMovieDataBinding.setUpcomingMovie(upcomingMovie);
+            upcomingMovieDataBinding.setOnUpcomingMovieClickListener(onUpcomingMovieClickListener);
         }
     }
 
-    interface OnUpcomingMovieClickListener {
+    public interface OnUpcomingMovieClickListener {
         void onUpcomingMovieViewClick(UpcomingMovie upcomingMovie);
     }
 }

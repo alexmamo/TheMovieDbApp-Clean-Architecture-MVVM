@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 public class PlayVideoViewModel extends ViewModel {
     private PlayRepository repository;
-    private MutableLiveData<TrailersApiResponse> trailersLiveData;
+    public MutableLiveData<TrailersApiResponse> trailersLiveData;
 
     @Inject
     PlayVideoViewModel(PlayRepository repository) {
@@ -17,9 +17,5 @@ public class PlayVideoViewModel extends ViewModel {
 
     public void setMovieId(int movieId) {
         trailersLiveData = repository.addTrailersToLiveData(movieId);
-    }
-
-    public LiveData<TrailersApiResponse> getMovieDetailsLiveData() {
-        return trailersLiveData;
     }
 }

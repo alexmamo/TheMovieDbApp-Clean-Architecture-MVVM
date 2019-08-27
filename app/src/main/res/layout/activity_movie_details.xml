@@ -1,53 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable
+            name="movieDetails"
+            type="ro.alexmamo.themoviedbapp.movie_details.MovieDetails" />
+    </data>
+
+    <ScrollView
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/poster_path_image_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="center"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription"/>
-
-        <TextView
-            android:id="@+id/title_and_release_date_text_view"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/standard_margin_size"
-            android:textColor="@color/colorLightGrey"
-            android:textSize="@dimen/title_and_release_date_text_size"
-            android:ellipsize="end"
-            android:maxLines="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/poster_path_image_view"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/language_text_view"
-            style="@style/VerticalMovieDetailsStandardTextViewStyle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title_and_release_date_text_view"/>
+            <ImageView
+                android:id="@+id/poster_path_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="center"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"/>
 
-        <TextView
-            android:id="@+id/genres_text_view"
-            style="@style/VerticalMovieDetailsStandardTextViewStyle"
-            android:maxLines="2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/language_text_view"/>
+            <TextView
+                android:id="@+id/title_and_release_date_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{movieDetails.getTitleAndReleaseDate(movieDetails)}"
+                android:layout_margin="@dimen/standard_margin_size"
+                android:textColor="@color/colorLightGrey"
+                android:textSize="@dimen/title_and_release_date_text_size"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/poster_path_image_view"/>
 
-        <TextView
-            android:id="@+id/overview_text_view"
-            style="@style/VerticalMovieDetailsStandardTextViewStyle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/genres_text_view"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            <TextView
+                android:id="@+id/language_text_view"
+                android:text="@{movieDetails.getLanguage(movieDetails)}"
+                style="@style/VerticalMovieDetailsStandardTextViewStyle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title_and_release_date_text_view"/>
+
+            <TextView
+                android:id="@+id/genres_text_view"
+                android:text="@{movieDetails.getGenres(movieDetails)}"
+                style="@style/VerticalMovieDetailsStandardTextViewStyle"
+                android:maxLines="2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/language_text_view"/>
+
+            <TextView
+                android:id="@+id/overview_text_view"
+                android:text="@{movieDetails.overview}"
+                style="@style/VerticalMovieDetailsStandardTextViewStyle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/genres_text_view"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

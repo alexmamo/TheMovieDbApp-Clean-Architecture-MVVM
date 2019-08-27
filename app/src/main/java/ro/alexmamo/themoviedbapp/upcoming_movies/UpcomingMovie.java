@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class UpcomingMovie {
     public int id;
-    String title;
+    public String title;
     @SerializedName("poster_path")
-    String posterPath;
+    public String posterPath;
 
     public UpcomingMovie(int id, String title, String posterPath) {
         this.id = id;

@@ -6,16 +6,13 @@ import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.databinding.DataBindingUtil;
 
 import com.bumptech.glide.RequestManager;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.gson.internal.LinkedTreeMap;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,6 +22,7 @@ import at.huber.youtubeExtractor.YouTubeExtractor;
 import at.huber.youtubeExtractor.YtFile;
 import dagger.android.support.DaggerAppCompatActivity;
 import ro.alexmamo.themoviedbapp.R;
+import ro.alexmamo.themoviedbapp.databinding.ActivityMovieDetailsBinding;
 import ro.alexmamo.themoviedbapp.movie_details.play.PlayVideoViewModel;
 import ro.alexmamo.themoviedbapp.movie_details.play.Trailer;
 import ro.alexmamo.themoviedbapp.utils.exo_player.ExoPlayerManager;
@@ -36,22 +34,17 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
     @Inject PlayVideoViewModel playVideoViewModel;
     @Inject RequestManager requestManager;
     private int movieId;
-    private ImageView posterPathImageView;
-    private TextView titleAndReleaseDateTextView;
-    private TextView languageTextView;
-    private TextView genresTextView;
-    private TextView overviewTextView;
+    private ActivityMovieDetailsBinding activityMovieDetailsBinding;
     private Dialog trailerDialog;
     private ExoPlayerManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_details);
+        activityMovieDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_details);
         movieId = getMovieIdFromIntent();
         setActionBar();
-        initViews();
-        initMovieDetailsViewModel();
+        setMovieIdInMovieDetailsViewModel();
     }
 
     private int getMovieIdFromIntent() {
@@ -66,61 +59,19 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
         setTitle("Movie Details");
     }
 
-    private void initViews() {
-        posterPathImageView = findViewById(R.id.poster_path_image_view);
-        titleAndReleaseDateTextView = findViewById(R.id.title_and_release_date_text_view);
-        languageTextView = findViewById(R.id.language_text_view);
-        genresTextView = findViewById(R.id.genres_text_view);
-        overviewTextView = findViewById(R.id.overview_text_view);
-    }
-
-    private void initMovieDetailsViewModel() {
+    private void setMovieIdInMovieDetailsViewModel() {
         movieDetailsViewModel.setMovieId(movieId);
-        movieDetailsViewModel.getMovieDetailsLiveData().observe(this, movieDetails -> {
+        movieDetailsViewModel.movieDetailsLiveData.observe(this, movieDetails -> {
             setPosterPathImageView(movieDetails.posterPath);
-            setTitleAndReleaseDateTextView(movieDetails.title, movieDetails.releaseDate);
-            setLanguageTextView(movieDetails.language);
-            setGenresTextView(movieDetails.genres);
-            setOverviewTextView(movieDetails.overview);
+            activityMovieDetailsBinding.setMovieDetails(movieDetails);
         });
     }
 
     private void setPosterPathImageView(String posterPath) {
         if (posterPath != null) {
             String entirePosterPath = getEntirePosterPathUrl(posterPath);
-            requestManager.load(entirePosterPath).into(posterPathImageView);
+            requestManager.load(entirePosterPath).into(activityMovieDetailsBinding.posterPathImageView);
         }
-    }
-
-    private void setTitleAndReleaseDateTextView(String title, String releaseDate) {
-        String entireTitle = title + " (" + releaseDate.substring(0, 4) + ")";
-        titleAndReleaseDateTextView.setText(entireTitle);
-    }
-
-    private void setLanguageTextView(String language){
-        String entireLanguage = "Language: " + language.substring(0,1).toUpperCase() + language.substring(1);
-        languageTextView.setText(entireLanguage);
-    }
-
-    private void setOverviewTextView(String overview) {
-        overviewTextView.setText(overview);
-    }
-
-    private void setGenresTextView(ArrayList genres) {
-        StringBuilder genresStringBuilder = new StringBuilder();
-        String separator = ", ";
-        for (int i = 0 ; i < genres.size(); i++) {
-            LinkedTreeMap treeMap = (LinkedTreeMap) genres.get(i);
-            String name = (String) treeMap.get("name");
-            if (name != null) {
-                if (i == genres.size() - 1) {
-                    separator = ".";
-                }
-                genresStringBuilder.append(name).append(separator);
-            }
-        }
-        String allGenres = "Genres: " + genresStringBuilder;
-        genresTextView.setText(allGenres);
     }
 
     @Override
@@ -145,7 +96,7 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
 
     private void playFirstTrailer(int movieId) {
         playVideoViewModel.setMovieId(movieId);
-        playVideoViewModel.getMovieDetailsLiveData().observe(this, trailersApiResponse -> {
+        playVideoViewModel.trailersLiveData.observe(this, trailersApiResponse -> {
             if (trailersApiResponse != null) {
                 List<Trailer> trailers = trailersApiResponse.trailers;
                 Trailer firstTrailer = trailers.get(0);

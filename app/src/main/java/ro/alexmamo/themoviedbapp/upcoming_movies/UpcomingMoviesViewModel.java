@@ -11,17 +11,13 @@ import javax.inject.Inject;
 public class UpcomingMoviesViewModel extends ViewModel {
     private PagedList.Config config;
     private UpcomingMoviesDataSourceFactory sourceFactory;
-    private LiveData<PagedList<UpcomingMovie>> pagedListLiveData;
+    LiveData<PagedList<UpcomingMovie>> pagedListLiveData;
 
     @Inject
     public UpcomingMoviesViewModel(PagedList.Config config) {
         this.config = config;
         sourceFactory = new UpcomingMoviesDataSourceFactory(null);
         pagedListLiveData = new LivePagedListBuilder<>(sourceFactory, config).build();
-    }
-
-    LiveData<PagedList<UpcomingMovie>> getMoviesPagedListLiveData() {
-        return pagedListLiveData;
     }
 
     void replaceSubscription(LifecycleOwner lifecycleOwner, String searchText) {
