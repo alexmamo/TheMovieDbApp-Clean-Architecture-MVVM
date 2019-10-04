@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 public class MovieDetailsViewModel extends ViewModel {
     private MovieDetailsRepository repository;
-    MutableLiveData<MovieDetails> movieDetailsLiveData;
+    LiveData<MovieDetails> movieDetailsLiveData;
 
     @Inject
     MovieDetailsViewModel(MovieDetailsRepository repository) {
