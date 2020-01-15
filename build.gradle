@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'com.android.tools.build:gradle:3.5.3'
     }
 }
 
@@ -21,11 +21,11 @@ task clean(type: Delete) {
 }
 
 ext {
-    appcompat = "1.0.2"
+    appcompat = "1.2.0-alpha01"
     constraintlayout = "1.1.3"
     cardview = "1.0.0"
-    recyclerview = "1.1.0-beta03"
-    material = "1.1.0-alpha09"
+    recyclerview = "1.2.0-alpha01"
+    material = "1.2.0-alpha03"
     support = "28.0.0"
     junit = "4.12"
     mockito = "1.10.19"
@@ -33,8 +33,8 @@ ext {
     ext_junit = "1.1.0"
     espresso = "3.2.0"
     core_testing = "1.1.1"
-    lifecycle = '2.2.0-alpha03'
-    paging = "2.1.0"
+    lifecycle = '2.2.0-rc03'
+    paging = "2.1.1"
     glide = "4.9.0"
     dagger = "2.22"
     retrofit2 = "2.5.0"
